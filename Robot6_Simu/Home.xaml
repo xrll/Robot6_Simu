@@ -1,0 +1,154 @@
+﻿<UserControl x:Class="Robot6_Simu.Home"
+             xmlns:h="http://helix-toolkit.org/wpf"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:materialDesign="clr-namespace:MaterialDesignThemes.Wpf;assembly=MaterialDesignThemes.Wpf"
+             xmlns:local="clr-namespace:Robot6_Simu"
+             xmlns:Control="clr-namespace:Robot6_Simu.Controls"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Button.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.CheckBox.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.ListBox.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.PopupBox.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.RadioButton.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.TextBlock.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.ToggleButton.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"></ColumnDefinition>
+            <ColumnDefinition Width="Auto"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <Grid>
+            <h:HelixViewport3D x:Name="viewPort3d" ModelUpDirection="0,0,1" ShowCoordinateSystem="True" ShowCameraInfo="False" ViewCubeVerticalPosition="Bottom" CoordinateSystemLabelForeground="Blue" CoordinateSystemVerticalPosition="Center" CoordinateSystemHorizontalPosition="Right" CoordinateSystemHeight="150" CoordinateSystemWidth="150" RenderOptions.BitmapScalingMode="HighQuality" RenderOptions.EdgeMode="Unspecified" BorderBrush="Black" BorderThickness="2"  IsManipulationEnabled="True" ChangeFieldOfViewCursor="ScrollNS" PanCursor="Hand" RotateCursor="SizeAll" ZoomCursor="SizeNS" ZoomRectangleCursor="ScrollSE">
+                <h:HelixViewport3D.Camera>
+                    <PerspectiveCamera Position="1853, 1793, 2316"  LookDirection="-2000, -2000, -2020" FieldOfView="45" NearPlaneDistance="0.125" UpDirection="0,0,1"/>
+                </h:HelixViewport3D.Camera>
+                <h:DefaultLights/>
+                <h:MeshGeometryVisual3D x:Name="r0" Content="{Binding R0}"/>
+                <h:MeshGeometryVisual3D x:Name="r1" Content="{Binding R1}"/>
+                <h:MeshGeometryVisual3D x:Name="r2" Content="{Binding R2}"/>
+                <h:MeshGeometryVisual3D x:Name="r3" Content="{Binding R3}"/>
+                <h:MeshGeometryVisual3D x:Name="r4" Content="{Binding R4}"/>
+                <h:MeshGeometryVisual3D x:Name="r5" Content="{Binding R5}"/>
+                <h:MeshGeometryVisual3D x:Name="r6" Content="{Binding R6}"/>
+                <h:MeshGeometryVisual3D x:Name="r7" Content="{Binding R7}"/>
+
+                <h:SphereVisual3D x:Name="v7" Center="{Binding J63}" Radius="11" Fill="Red"></h:SphereVisual3D>
+
+                <h:BoxVisual3D x:Name="c1"  Fill="DarkGray" Center="610,-400,550" Height="100" Length="20" Width="600">
+                    <h:BoxVisual3D.Transform>
+                        <RotateTransform3D CenterX="0" CenterY="0" CenterZ="{Binding Tz}">
+                            <RotateTransform3D.Rotation>
+                                <AxisAngleRotation3D Angle="-30" Axis="1,0,0" />
+                            </RotateTransform3D.Rotation>
+                        </RotateTransform3D>
+                    </h:BoxVisual3D.Transform>
+                </h:BoxVisual3D>
+                <h:BoxVisual3D x:Name="c2" Fill="DarkGray" Center="550,-400,510" Height="20" Length="100" Width="600">
+                    <h:BoxVisual3D.Transform>
+                        <RotateTransform3D CenterX="0" CenterY="0" CenterZ="{Binding Tz}">
+                            <RotateTransform3D.Rotation>
+                                <AxisAngleRotation3D Angle="-30" Axis="1,0,0" />
+                            </RotateTransform3D.Rotation>
+                        </RotateTransform3D>
+                    </h:BoxVisual3D.Transform>
+                </h:BoxVisual3D>
+                <h:TubeVisual3D x:Name="c20" Fill="OrangeRed" Diameter="20">
+                    <h:TubeVisual3D.Transform>
+                        <RotateTransform3D CenterX="0" CenterY="0" CenterZ="{Binding Tz}">
+                            <RotateTransform3D.Rotation>
+                                <AxisAngleRotation3D Angle="-30" Axis="1,0,0" />
+                            </RotateTransform3D.Rotation>
+                        </RotateTransform3D>
+                    </h:TubeVisual3D.Transform>
+                </h:TubeVisual3D>
+
+                <h:BoxVisual3D x:Name="c3" Fill="DarkGray" Center="0,0,400" Transform="{h:Translate 600,300,0}"  Height="10" Length="300" Width="300"></h:BoxVisual3D>
+                <h:PipeVisual3D x:Name="c4"  Point1="0,0,400" Point2="0,0,500" Transform="{h:Translate 600,300,0}" Diameter="200" InnerDiameter="180"  Fill="DarkGray"/>
+                <h:TubeVisual3D x:Name="c30" Fill="OrangeRed" Diameter="20" Transform="{h:Translate 600,300,0}"></h:TubeVisual3D>
+
+                <h:ArrowVisual3D x:Name="n6" Point1="{Binding J62}" Point2="{Binding J6n}" Diameter="10"  Fill="Red"></h:ArrowVisual3D>
+                <h:ArrowVisual3D x:Name="o6" Point1="{Binding J62}" Point2="{Binding J6o}" Diameter="10" Fill="Orange"></h:ArrowVisual3D>
+                <h:ArrowVisual3D x:Name="a6" Point1="{Binding J62}" Point2="{Binding J6a}" Diameter="10" Fill="Green"></h:ArrowVisual3D>
+                <h:RectangleVisual3D Normal="0,0,1" LengthDirection="0,1,0" Width="2000" Length="2000"  Fill="#330000FF"/>
+            </h:HelixViewport3D>
+        </Grid>
+        <ScrollViewer x:Name="ScrollViewer" Height="780" VerticalAlignment="Top"
+                                     Grid.Column="1"
+                                      HorizontalScrollBarVisibility="Auto"
+                                      VerticalScrollBarVisibility="Visible">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="*"></RowDefinition>
+                </Grid.RowDefinitions>
+                <StackPanel>
+                    <Control:JAngles x:Name="V6" OnJointValueChanged="Rot_OnRotValueChanged"></Control:JAngles>
+                    <Control:JOutput x:Name="end"  Margin="3 3 3 3" ></Control:JOutput>
+                    <Control:Inverse x:Name="iverse" Margin="3 3 3 3" ></Control:Inverse>
+                    <Control:Jacobi Margin="2 2 2 2" ></Control:Jacobi>
+                    <Control:Differential Margin="2 2 2 2" ></Control:Differential>
+                    <Grid Margin="6 2 2 2">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"></ColumnDefinition>
+                            <ColumnDefinition Width="*"></ColumnDefinition>
+                            <ColumnDefinition Width="*"></ColumnDefinition>
+                            <ColumnDefinition Width="*"></ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+                        <Button Grid.Column="0" 
+  IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
+  Style="{StaticResource MaterialDesignFloatingActionButton}" Click="Simu_Click"
+  Content="Simu">
+                        </Button>
+                        <materialDesign:PopupBox Grid.Column="2" 
+  IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
+  PlacementMode="TopAndAlignCentres"
+  Style="{StaticResource MaterialDesignMultiFloatingActionPopupBox}"
+  ToolTip="定位"
+  ToolTipService.Placement="Left" Cursor="Hand">
+                            <StackPanel>
+                                <Button Command="{Binding ResetRoboCommand}"
+      Content="ZERO" Opacity="0.6"
+      ToolTip="零位" />
+                                <Button Command="{Binding OriginalRoboCommand}"
+      Content="Orig" Opacity="0.6"
+      ToolTip="原始位置" />
+                                <Button Command="{Binding D3030RoboCommand}"
+      Content="3030" Opacity="0.6"
+      ToolTip="3030" />
+                            </StackPanel>
+                        </materialDesign:PopupBox>
+                        <materialDesign:PopupBox Grid.Column="3" 
+  IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
+  PlacementMode="TopAndAlignCentres"
+  Style="{StaticResource MaterialDesignMultiFloatingActionPopupBox}"
+  ToolTip="奇异点"
+  ToolTipService.Placement="Left" Cursor="Hand">
+                            <StackPanel>
+                                <Button Command="{Binding SingularRoboCommand}" CommandParameter="1"
+      Content="1"
+      ToolTip="奇异点一" />
+                                <Button Command="{Binding SingularRoboCommand}" CommandParameter="2"
+      Content="2"
+      ToolTip="奇异点二" />
+                                <Button Command="{Binding SingularRoboCommand}" CommandParameter="3"
+      Content="3"
+      ToolTip="奇异点三" />
+                            </StackPanel>
+                        </materialDesign:PopupBox>
+                    </Grid>
+                </StackPanel>
+            </Grid>
+        </ScrollViewer>
+    </Grid>
+</UserControl>
