@@ -105,7 +105,6 @@ namespace Robot6_Simu
             c30.Path = wps2;
             wct = Math.Cos(cAng);
             wst = Math.Sin(cAng);
-
             ct = 0.866;
             st = 0.5;
             //ota2 = new double[] { -st, 0, -ct };
@@ -160,7 +159,7 @@ namespace Robot6_Simu
         double[] TPoint1, TPoint2, TPoint3, TPoint4, TPoint5, TPoint6;
         double[] TAngle1, TAngle2, TAngle3, TAngle4, TAngle5, TAngle6;
         Point3D lSPoint, lEPoint,cSpoint;
-        double radius = 100, cAng = Math.Atan2(3, 4), wAng = 0,wct=0,wst=0,ct=0,st=0;
+        double radius = 100, cAng = Math.Atan2(3, 6), wAng = 0,wct=0,wst=0,ct=0,st=0;
         int Process = 0;
 
         private void Initialize_Robot()
