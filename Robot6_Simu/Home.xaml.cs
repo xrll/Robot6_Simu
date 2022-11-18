@@ -748,9 +748,9 @@ namespace Robot6_Simu
                 }
                 else if (dpv > stp/2)
                 {
-                    dpx /= dpv / stp * 2;
-                    dpy /= dpv / stp * 2;
-                    dpz /= dpv / stp * 2;
+                    dpx /= dpv / stp * 2.0;
+                    dpy /= dpv / stp * 2.0;
+                    dpz /= dpv / stp * 2.0;
                 }
                 if (dnv > vstp)
                 {
@@ -760,9 +760,9 @@ namespace Robot6_Simu
                 }
                 else if (dnv > vstp / 2)
                 {
-                    dnx /= dnv / vstp * 2;
-                    dny /= dnv / vstp * 2;
-                    dnz /= dnv / vstp * 2;
+                    dnx /= dnv / vstp * 2.0;
+                    dny /= dnv / vstp * 2.0;
+                    dnz /= dnv / vstp * 2.0;
                 }
                 if (dav > vstp)
                 {
@@ -806,7 +806,7 @@ namespace Robot6_Simu
                 double gradient = PartialGradient(target, angles, i);
                 if (fstp)
                     angles[i] -= LearningRate * gradient;
-                else if (dnv > vstp/2 || dav > vstp/2 || dov > vstp / 2)
+                else if (dnv > vstp/2 || dav > vstp/2.0 || dov > vstp / 2.0)
                 {
                     angles[i] += diff[i];
                 }
