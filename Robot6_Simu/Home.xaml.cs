@@ -772,9 +772,9 @@ namespace Robot6_Simu
                 }
                 else if (dav > vstp / 2)
                 {
-                    dax /= dav / vstp * 2;
-                    day /= dav / vstp * 2;
-                    daz /= dav / vstp * 2;
+                    dax /= dav / vstp * 2.0;
+                    day /= dav / vstp * 2.0;
+                    daz /= dav / vstp * 2.0;
                 }
                 if (dov > vstp)
                 {
@@ -784,9 +784,9 @@ namespace Robot6_Simu
                 }
                 else if (dov > vstp / 2)
                 {
-                    dox /= dov / vstp * 2;
-                    doy /= dov / vstp * 2;
-                    doz /= dov / vstp * 2;
+                    dox /= dov / vstp * 2.0;
+                    doy /= dov / vstp * 2.0;
+                    doz /= dov / vstp * 2.0;
                 }
                 if (dnv > vstp/2 || dav > vstp/2 || dov > vstp / 2)
                 {
