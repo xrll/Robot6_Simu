@@ -708,7 +708,7 @@ namespace Robot6_Simu
         double DistanceThreshold = 5.00;
         double stp = 0.5;
         bool fstp = true;
-        double vstp = 0.4;
+        double vstp = 0.2;
         public double[] PGInverseKinematics(double[] target, double[] angles,ref bool tog)
         {
             double dpv=0,dnv = 0, dav = 0, dov = 0, nnx = 0, nny = 0, nnz = 0, nax = 0, nay = 0, naz = 0, nox = 0, noy = 0, noz = 0, drx = 0, dry = 0, drz = 0;
@@ -741,11 +741,17 @@ namespace Robot6_Simu
                 dav = Math.Sqrt(dax * dax + day * day + daz * daz);
                 dov = Math.Sqrt(dox * dox + doy * doy + doz * doz);
 
-                if (dpv > vstp)
+                if (dpv > stp)
                 {
-                    dpx /= dpv / vstp;
-                    dpy /= dpv / vstp;
-                    dpz /= dpv / vstp;
+                    dpx /= dpv / stp;
+                    dpy /= dpv / stp;
+                    dpz /= dpv / stp;
+                }
+                else if (dpv > stp/2)
+                {
+                    dpx /= dpv / stp * 2;
+                    dpy /= dpv / stp * 2;
+                    dpz /= dpv / stp * 2;
                 }
                 if (dnv > vstp)
                 {
@@ -753,11 +759,23 @@ namespace Robot6_Simu
                     dny /= dnv / vstp;
                     dnz /= dnv / vstp;
                 }
+                else if (dnv > vstp / 2)
+                {
+                    dnx /= dnv / vstp * 2;
+                    dny /= dnv / vstp * 2;
+                    dnz /= dnv / vstp * 2;
+                }
                 if (dav > vstp)
                 {
                     dax /= dav / vstp;
                     day /= dav / vstp;
                     daz /= dav / vstp;
+                }
+                else if (dav > vstp / 2)
+                {
+                    dax /= dav / vstp * 2;
+                    day /= dav / vstp * 2;
+                    daz /= dav / vstp * 2;
                 }
                 if (dov > vstp)
                 {
@@ -765,7 +783,13 @@ namespace Robot6_Simu
                     doy /= dov / vstp;
                     doz /= dov / vstp;
                 }
-                if (dnv > vstp || dav > vstp || dov > vstp)
+                else if (dov > vstp / 2)
+                {
+                    dox /= dov / vstp * 2;
+                    doy /= dov / vstp * 2;
+                    doz /= dov / vstp * 2;
+                }
+                if (dnv > vstp/2 || dav > vstp/2 || dov > vstp / 2)
                 {
                     drx = dnz * r6n[1] + doz * r6o[1] + daz * r6a[1];
                     dry = dnx * r6n[2] + dox * r6o[2] + dax * r6a[2];
@@ -779,12 +803,11 @@ namespace Robot6_Simu
                 if (da == 0)
                     continue;
 
-                // Gradient descent
-                // Update : Solution -= LearningRate * Gradient
+                // Gradient Descent
                 double gradient = PartialGradient(target, angles, i);
                 if (fstp)
                     angles[i] -= LearningRate * gradient;
-                else if (dnv > vstp || dav > vstp || dov > vstp)
+                else if (dnv > vstp/2 || dav > vstp/2 || dov > vstp / 2)
                 {
                     angles[i] += diff[i];
                 }
@@ -1133,24 +1156,6 @@ namespace Robot6_Simu
         {
             //return new Color4((float)r, (float)g, (float)b, (float)a);
             return System.Windows.Media.Color.FromScRgb((float)a, (float)r, (float)g, (float)b);
-        }
-    }
-    class Joint
-    {
-        public Model3D model = null;
-        public double angle = 0;
-        public double angleMin = -180;
-        public double angleMax = 180;
-        public int rotPointX = 0;
-        public int rotPointY = 0;
-        public int rotPointZ = 0;
-        public int rotAxisX = 0;
-        public int rotAxisY = 0;
-        public int rotAxisZ = 0;
-
-        public Joint(Model3D pModel)
-        {
-            model = pModel;
         }
     }
 }
