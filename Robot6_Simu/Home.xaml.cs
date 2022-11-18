@@ -788,7 +788,7 @@ namespace Robot6_Simu
                     doy /= dov / vstp * 2.0;
                     doz /= dov / vstp * 2.0;
                 }
-                if (dnv > vstp/2 || dav > vstp/2 || dov > vstp / 2)
+                if (dnv > vstp/2 || dav > vstp/2 || dov > vstp / 2.0)
                 {
                     drx = dnz * r6n[1] + doz * r6o[1] + daz * r6a[1];
                     dry = dnx * r6n[2] + dox * r6o[2] + dax * r6a[2];
