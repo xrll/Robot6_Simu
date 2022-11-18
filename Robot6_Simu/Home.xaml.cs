@@ -782,7 +782,7 @@ namespace Robot6_Simu
                     doy /= dov / vstp;
                     doz /= dov / vstp;
                 }
-                else if (dov > vstp / 2)
+                else if (dov > vstp / 2.0)
                 {
                     dox /= dov / vstp * 2.0;
                     doy /= dov / vstp * 2.0;
