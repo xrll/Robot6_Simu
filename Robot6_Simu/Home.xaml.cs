@@ -45,8 +45,6 @@ namespace Robot6_Simu
     /// </summary>
     public partial class Home : System.Windows.Controls.UserControl
     {
-
-
         bool switchingJoint = false;
         public static bool isAnimating = false;
 
@@ -597,6 +595,7 @@ namespace Robot6_Simu
                         wAng = 0;
                     }
                     MainWindowViewModel.JointAngles[1] -= 0.2;
+                    MainWindowViewModel.JointAngles[4] -= 0.2;
                     double[] angles = new double[6];
                     MainWindowViewModel.JointAngles.CopyTo(angles, 0);
                     ForwardKinematics(angles);
@@ -996,19 +995,19 @@ namespace Robot6_Simu
                     for (int j = 0; j < 6; j++)
                         MainWindowViewModel.Jacobian[i * 6 + j] = J[i, j];
                 MainWindowViewModel.Jacobian[36] = JointClass6.Det(J);
-                A1.CurAngle= Ang[0];
-                A2.CurAngle = Ang[1];
-                A3.CurAngle = Ang[2];
-                A4.CurAngle = Ang[3];
-                A5.CurAngle = Ang[4];
-                A6.CurAngle = Ang[5];
+                //A1.CurAngle= Ang[0];
+                //A2.CurAngle = Ang[1];
+                //A3.CurAngle = Ang[2];
+                //A4.CurAngle = Ang[3];
+                //A5.CurAngle = Ang[4];
+                //A6.CurAngle = Ang[5];
 
-                Matrix4x4 t1 = A1.T;
-                Matrix4x4 t2 = t1 * A2.T;
-                Matrix4x4 t3 = t2 * A3.T;
-                Matrix4x4 t4 = t3 * A4.T;
-                Matrix4x4 t5 = t4 * A5.T;
-                Matrix4x4 t6 = t5 * A6.T;
+                //Matrix4x4 t1 = A1.T;
+                //Matrix4x4 t2 = t1 * A2.T;
+                //Matrix4x4 t3 = t2 * A3.T;
+                //Matrix4x4 t4 = t3 * A4.T;
+                //Matrix4x4 t5 = t4 * A5.T;
+                //Matrix4x4 t6 = t5 * A6.T;
 
                 //float x = 300;
                 //float y = 400;
