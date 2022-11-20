@@ -32,7 +32,7 @@
                         <ColumnDefinition Width="3*"></ColumnDefinition>
                         <ColumnDefinition Width="*"></ColumnDefinition>
                     </Grid.ColumnDefinitions>
-                    <Slider Minimum="-180" Maximum="180" Width="320" Margin="2 8 2 8" Value="{Binding JointAngles[3]}" VerticalAlignment="Center"  ValueChanged="V_ValueChanged" x:Name="J04"/>
+                    <Slider Minimum="-180" Maximum="180" Width="320" Margin="2 8 2 8" Value="{Binding JointAngles[3],Mode=OneWay}" VerticalAlignment="Center"  ValueChanged="V_ValueChanged" x:Name="J04"/>
                     <Border BorderThickness="0 0 0 1" BorderBrush="{DynamicResource PrimaryHueDarkForegroundBrush}" Grid.Column="1">
                         <Grid>
                             <TextBlock FontSize="14" x:Name="j1t" VerticalAlignment="center" Margin="2 4 0 0" Text="{Binding ElementName=J04,Path=Value,StringFormat={}{0:F2}}" HorizontalAlignment="Center"/>

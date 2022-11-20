@@ -89,7 +89,7 @@ namespace Robot6_Simu
             timer = new System.Windows.Forms.Timer();
             timer.Interval = 15;
             timer.Tick += new System.EventHandler(timer_Tick);
-            A1 = new JointClass6((float)AD[0][0], 0, 1, 0);
+            A1 = new JointClass6((float)AD[0][0], (float)AD[0][1], 1, 0);
             A2 = new JointClass6((float)AD[1][0], 0, 2, 0);
             A3 = new JointClass6((float)AD[2][0], 0, 3, 0);
             A4 = new JointClass6(0, (float)AD[3][1], 4, 0);
@@ -105,7 +105,7 @@ namespace Robot6_Simu
             c30.Path = wps2;
             wct = Math.Cos(cAng);
             wst = Math.Sin(cAng);
-            ct = 0.866;
+            ct = Math.Sqrt(3) / 2;
             st = 0.5;
             //ota2 = new double[] { -st, 0, -ct };
             //otn2 = new double[] { 0, 1, 0 };
@@ -130,9 +130,9 @@ namespace Robot6_Simu
             float mty = -m.M22 * 700 - m.M23 * 30;
             float mtz = -m.M32 * 700 - m.M33 * 30 + Tz;
 
-            tn1 = new double[] { 0.866, st * 0.5, ct * 0.5 };
+            tn1 = new double[] { ct, st * 0.5, ct * 0.5 };
             to1 = new double[] { 0, -ct, st };
-            ta1 = new double[] { 0.5, -st * 0.866, -ct * 0.866 };
+            ta1 = new double[] { 0.5, -st * ct, -ct * ct };
             TPoint4 = new double[] { ntx - ta1[0] * pL, nty - ta1[1] * pL, ntz - ta1[2] * pL };
             TPoint3 = new double[] { ntx, nty, ntz };
             TPoint2 = new double[] { ntx, mty, mtz };
@@ -171,14 +171,6 @@ namespace Robot6_Simu
                 int i = 0;
                 foreach (string modelName in arr)
                 {
-                    //var materialGroup = new MaterialGroup();
-                    //Color mainColor = Colors.White;
-                    //EmissiveMaterial emissMat = new EmissiveMaterial(new SolidColorBrush(mainColor));
-                    //DiffuseMaterial diffMat = new DiffuseMaterial(new SolidColorBrush(mainColor));
-                    //SpecularMaterial specMat = new SpecularMaterial(new SolidColorBrush(mainColor), 200);
-                    //materialGroup.Children.Add(emissMat);
-                    //materialGroup.Children.Add(diffMat);
-                    //materialGroup.Children.Add(specMat);
                     MaterialGroup materialGroup;
                     System.Windows.Media.Color DiffuseColor, SpecularColor, EmissiveColor;
                     if (i == 2 || i == 4 || i == 5)
@@ -233,69 +225,6 @@ namespace Robot6_Simu
                         MainWindowViewModel.R7 = model;
                     i++;
                 }
-
-
-                //RA.Children.Add(joints[0].model);
-                //RA.Children.Add(joints[1].model);
-                //RA.Children.Add(joints[2].model);
-                //RA.Children.Add(joints[3].model);
-                //RA.Children.Add(joints[4].model);
-                //RA.Children.Add(joints[5].model);
-                //RA.Children.Add(joints[6].model);
-
-                //joints[0].angleMin = -180;
-                //joints[0].angleMax = 180;
-                //joints[0].rotAxisX = 0;
-                //joints[0].rotAxisY = 0;
-                //joints[0].rotAxisZ = 1;
-                //joints[0].rotPointX = 0;
-                //joints[0].rotPointY = 0;
-                //joints[0].rotPointZ = 0;
-
-                //joints[1].angleMin = -100;
-                //joints[1].angleMax = 60;
-                //joints[1].rotAxisX = 0;
-                //joints[1].rotAxisY = 1;
-                //joints[1].rotAxisZ = 0;
-                //joints[1].rotPointX = 75;
-                //joints[1].rotPointY = 0;
-                //joints[1].rotPointZ = 450;
-
-                //joints[2].angleMin = -90;
-                //joints[2].angleMax = 90;
-                //joints[2].rotAxisX = 0;
-                //joints[2].rotAxisY = 1;
-                //joints[2].rotAxisZ = 0;
-                //joints[2].rotPointX = 75;
-                //joints[2].rotPointY = 0;
-                //joints[2].rotPointZ = 1090;
-
-                //joints[3].angleMin = -180;
-                //joints[3].angleMax = 180;
-                //joints[3].rotAxisX = 1;
-                //joints[3].rotAxisY = 0;
-                //joints[3].rotAxisZ = 0;
-                //joints[3].rotPointX = 0;
-                //joints[3].rotPointY = 0;
-                //joints[3].rotPointZ = 1285;
-
-                //joints[4].angleMin = -115;
-                //joints[4].angleMax = 115;
-                //joints[4].rotAxisX = 0;
-                //joints[4].rotAxisY = 1;
-                //joints[4].rotAxisZ = 0;
-                //joints[4].rotPointX = 975;
-                //joints[4].rotPointY = 0;
-                //joints[4].rotPointZ = 1285;
-
-                //joints[5].angleMin = -180;
-                //joints[5].angleMax = 180;
-                //joints[5].rotAxisX = 1;
-                //joints[5].rotAxisY = 0;
-                //joints[5].rotAxisZ = 0;
-                //joints[5].rotPointX = 0;
-                //joints[5].rotPointY = 0;
-                //joints[5].rotPointZ = 1285;
             }
             catch (Exception e)
             {

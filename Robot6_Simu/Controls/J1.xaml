@@ -32,10 +32,10 @@
                         <ColumnDefinition Width="3*"></ColumnDefinition>
                         <ColumnDefinition Width="*"></ColumnDefinition>
                     </Grid.ColumnDefinitions>
-                    <Slider Minimum="-180" Maximum="180" Width="320" Margin="2 8 2 8" Value="{Binding JointAngles[0]}" VerticalAlignment="Center"  ValueChanged="V_ValueChanged" x:Name="J01"/>
+                    <Slider Minimum="-180" Maximum="180" Width="320" Margin="2 8 2 8" Value="{Binding JointAngles[0],Mode=OneWay}" VerticalAlignment="Center"  ValueChanged="V_ValueChanged" x:Name="J01"/>
                     <Border BorderThickness="0 0 0 1" BorderBrush="{DynamicResource PrimaryHueDarkForegroundBrush}" Grid.Column="1">
                         <Grid VerticalAlignment="center">
-                            <TextBlock FontSize="14" x:Name="j1t" Margin="2 4 0 0" Text="{Binding ElementName=J01,Path=Value,StringFormat={}{0:F2}}" HorizontalAlignment="Center"/>
+                            <TextBlock FontSize="14" x:Name="j1t" Margin="2 4 0 0" Text="{Binding ElementName=J01,Path=Value, Mode=OneWay, StringFormat={}{0:F2}}" HorizontalAlignment="Center"/>
                         </Grid>
                     </Border>
                 </Grid>
