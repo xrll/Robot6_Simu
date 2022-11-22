@@ -351,7 +351,7 @@ namespace Robot6_Simu
             }
             else if (Process == 2)
             {
-                lt += stp;
+                lt += 1.5*stp;
                 if (lt > wL)
                 {
                     if (c == 40)
@@ -576,7 +576,7 @@ namespace Robot6_Simu
                     }
                     c++;
                 }
-                wAng += 0.8 * stp / radius;
+                wAng += 1.2 * stp / radius;
                 if (wAng > 2 * Math.PI)
                     wAng = 2 * Math.PI;
             }
@@ -595,7 +595,8 @@ namespace Robot6_Simu
                         wAng = 0;
                     }
                     MainWindowViewModel.JointAngles[1] -= 0.2;
-                    MainWindowViewModel.JointAngles[4] -= 0.2;
+                    MainWindowViewModel.JointAngles[4] -= 0.15;
+                    MainWindowViewModel.JointAngles[5] -= 0.5;
                     double[] angles = new double[6];
                     MainWindowViewModel.JointAngles.CopyTo(angles, 0);
                     ForwardKinematics(angles);
