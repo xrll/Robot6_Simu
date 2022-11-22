@@ -5,6 +5,7 @@ using System.Text;
 using System.Numerics;
 using System.Runtime.Intrinsics;
 using System.Diagnostics.Eventing.Reader;
+using Microsoft.VisualBasic.Logging;
 
 namespace Utilities
 {
@@ -1348,6 +1349,442 @@ namespace Utilities
                 }
             }
             return tmpDet;
+        }
+
+        public void rotate(double[,] mf)
+        {
+            double rotateX = 0, rotateY = 0, rotateZ = 0;
+            if (mf[0,1] > 0.998)
+            { // singularity at north pole
+
+                rotateY = (float)(Math.Atan2(mf[2,0], mf[2,2]) * 180 / 3.1415926f);
+
+                rotateZ = (float)(Math.PI / 2 * 180 / 3.1415926f);
+
+                rotateX = 0;
+
+                return;
+
+            }
+
+            if (mf[0,1] < -0.998)
+            { // singularity at south pole
+
+                rotateY = (float)(Math.Atan2(mf[2,0], mf[2,2]) * 180 / 3.1415926f);
+
+                rotateZ = (float)(-Math.PI / 2 * 180 / 3.1415926f);
+
+                rotateX = 0;
+
+                return;
+
+            }
+
+            rotateY = (float)(Math.Atan2(-mf[0,2], mf[0,0]) * 180 / 3.1415926f);
+
+            rotateX = (float)(Math.Atan2(-mf[2,1], mf[1,1]) * 180 / 3.1415926f);
+
+            rotateZ = (float)(Math.Asin(mf[0,1]) * 180 / 3.1415926f);
+
+        }
+
+
+
+        public double toAxisAngle(double[,] m)
+        {
+
+            double angle = 0, x, y, z; // variables for result
+
+            double epsilon = 0.01; // margin to allow for rounding errors
+
+            double epsilon2 = 0.1; // margin to distinguish between 0 and 180 degrees
+
+            double rotate = 0;
+
+            if ((Math.Abs(m[0,2] - m[0,1]) < epsilon)
+
+              && (Math.Abs(m[2,0] - m[0,2]) < epsilon)
+
+              && (Math.Abs(m[2,1] - m[1,2]) < epsilon))
+            {
+
+                // singularity found
+
+                // first check for identity matrix which must have +1 for all terms
+
+                //  in leading diagonaland zero in other terms
+
+                if ((Math.Abs(m[1,0] + m[0,1]) < epsilon2)
+
+                  && (Math.Abs(m[2,0] + m[0,2]) < epsilon2)
+
+                  && (Math.Abs(m[2,1] + m[1,2]) < epsilon2)
+
+                  && (Math.Abs(m[0,0] + m[1,1] + m[2,2] - 3) < epsilon2))
+                {
+
+                    // this singularity is identity matrix so angle = 0
+
+                    rotate = (float)(angle * 180 / 3.1415926f);
+
+                    //Log.e("webview", "angle" + angle);
+
+                    return rotate;//new axisAngle(0,1,0,0); // zero angle, arbitrary axis
+
+                }
+
+                // otherwise this singularity is angle = 180
+
+                angle = Math.PI;
+
+                double xx = (m[0,0] + 1) / 2;
+
+                double yy = (m[1,1] + 1) / 2;
+
+                double zz = (m[2,2] + 1) / 2;
+
+                double xy = (m[1,0] + m[0,1]) / 4;
+
+                double xz = (m[2,0] + m[0,2]) / 4;
+
+                double yz = (m[2,1] + m[1,2]) / 4;
+
+                if ((xx > yy) && (xx > zz))
+                { // m[0,0][0] is the largest diagonal term
+
+                    if (xx < epsilon)
+                    {
+
+                        x = 0;
+
+                        y = 0.7071;
+
+                        z = 0.7071;
+
+                    }
+                    else
+                    {
+
+                        x = Math.Sqrt(xx);
+
+                        y = xy / x;
+
+                        z = xz / x;
+
+                    }
+
+                }
+                else if (yy > zz)
+                { // m[0,1][1] is the largest diagonal term
+
+                    if (yy < epsilon)
+                    {
+
+                        x = 0.7071;
+
+                        y = 0;
+
+                        z = 0.7071;
+
+                    }
+                    else
+                    {
+
+                        y = Math.Sqrt(yy);
+
+                        x = xy / y;
+
+                        z = yz / y;
+
+                    }
+
+                }
+                else
+                { // m[0,2][2] is the largest diagonal term so base result on this
+
+                    if (zz < epsilon)
+                    {
+
+                        x = 0.7071;
+
+                        y = 0.7071;
+
+                        z = 0;
+
+                    }
+                    else
+                    {
+
+                        z = Math.Sqrt(zz);
+
+                        x = xz / z;
+
+                        y = yz / z;
+
+                    }
+
+                }
+
+               rotate = (float)(angle * 180 / 3.1415926f);
+
+                //Log.e("webview", "angle" + angle);
+
+                return rotate;//new axisAngle(angle,x,y,z); // return 180 deg rotation
+
+            }
+
+            // as we have reached here there are no singularities so we can handle normally
+
+            double s = Math.Sqrt((m[1,2] - m[2,1]) * (m[1,2] - m[2,1])
+
+            + (m[2,0] - m[0,2]) * (m[2,0] - m[0,2])
+
+            + (m[0,1] - m[1,0]) * (m[0,1] - m[1,0])); // used to normalise
+
+            if (Math.Abs(s) < 0.001) s = 1;
+
+            // prevent divide by zero, should not happen if matrix is orthogonal and should be
+
+            // caught by singularity test above, but I've left it in just in case
+
+            angle = Math.Acos((m[0,0] + m[1,1] + m[2,2] - 1) / 2);
+
+            x = (m[1,2] - m[2,1]) / s;
+
+            y = (m[2,0] - m[0,2]) / s;
+
+            z = (m[0,1] - m[1,0]) / s;
+
+            rotate = (float)(angle * 180 / 3.1415926f);
+
+            //Log.e("webview", "angle" + angle);
+
+            return rotate;//new axisAngle(angle,x,y,z);
+
+        }
+        //四元数转旋转矩阵 Hamilton表达右手系
+        double[] getRotation(double[] Quaternion)
+        {
+            double[] rt_mat = new double[9];
+            rt_mat[0] = 1 - 2 * (Quaternion[2] * Quaternion[2]) - 2 * (Quaternion[3] * Quaternion[3]);
+            rt_mat[1] = 2 * Quaternion[1] * Quaternion[2] - 2 * Quaternion[0] * Quaternion[3];
+            rt_mat[2] = 2 * Quaternion[1] * Quaternion[3] + 2 * Quaternion[0] * Quaternion[2];
+            rt_mat[3] = 2 * Quaternion[1] * Quaternion[2] + 2 * Quaternion[0] * Quaternion[3];
+            rt_mat[4] = 1 - 2 * (Quaternion[1] * Quaternion[1]) - 2 * (Quaternion[3] * Quaternion[3]);
+            rt_mat[5] = 2 * Quaternion[2] * Quaternion[3] - 2 * Quaternion[0] * Quaternion[1];
+            rt_mat[6] = 2 * Quaternion[1] * Quaternion[3] - 2 * Quaternion[0] * Quaternion[2];
+            rt_mat[7] = 2 * Quaternion[2] * Quaternion[3] + 2 * Quaternion[0] * Quaternion[1];
+            rt_mat[8] = 1 - 2 * (Quaternion[1] * Quaternion[1]) - 2 * (Quaternion[2] * Quaternion[2]);
+            return rt_mat;
+        }
+        //旋转矩阵转四元数
+        double[] getQuaternion(double[,] R)
+        {
+            double[] Q = new double[9];
+            double trace = R[0, 0] + R[1, 1] + R[2, 2];
+
+            if (trace > 0.0)
+            {
+                double s = Math.Sqrt(trace + 1.0);
+                Q[3] = (s * 0.5);
+                s = 0.5 / s;
+                Q[0] = (R[2, 1] - R[1, 2]) * s;
+                Q[1] = (R[0, 2] - R[2, 0]) * s;
+                Q[2] = (R[1, 0] - R[0, 1]) * s;
+            }
+
+            else
+            {
+                int i = R[0, 0] < R[1, 1] ? (R[1, 1] < R[2, 2] ? 2 : 1) : (R[0, 0] < R[2, 2] ? 2 : 0);
+                int j = (i + 1) % 3;
+                int k = (i + 2) % 3;
+
+                double s = Math.Sqrt(R[i, i] - R[j, j] - R[k, k] + 1.0);
+                Q[i] = s * 0.5;
+                s = 0.5 / s;
+
+                Q[3] = (R[k, j] - R[j, k]) * s;
+                Q[j] = (R[j, i] + R[i, j]) * s;
+                Q[k] = (R[k, i] + R[i, k]) * s;
+            }
+            return Q;
+        }
+        //旋转矩阵转四元数 JPL表达左手系
+        double[] getQuaternion2(double[,] R)//JPL
+        {
+            double[] Q = new double[9];
+            double m11 = R[0, 0], m12 = R[0, 1], m13 = R[0, 2];
+            double m21 = R[1, 0], m22 = R[1, 1], m23 = R[1, 2];
+            double m31 = R[2, 0], m32 = R[2, 1], m33 = R[2, 2];
+
+            double w=0, x=0, y=0, z=0;
+
+            //探测四元数中最大的项 
+            double fourWSquaredMinusl = m11 + m22 + m33;
+            double fourXSquaredMinusl = m11 - m22 - m33;
+            double fourYSquaredMinusl = m22 - m11 - m33;
+            double fourZSquaredMinusl = m33 - m11 - m22;
+
+            int biggestIndex = 0;
+            double fourBiggestSqureMinus1 = fourWSquaredMinusl;
+            if (fourXSquaredMinusl > fourBiggestSqureMinus1)
+            {
+                fourBiggestSqureMinus1 = fourXSquaredMinusl;
+                biggestIndex = 1;
+            }
+            if (fourYSquaredMinusl > fourBiggestSqureMinus1)
+            {
+                fourBiggestSqureMinus1 = fourYSquaredMinusl;
+                biggestIndex = 2;
+            }
+            if (fourZSquaredMinusl > fourBiggestSqureMinus1)
+            {
+                fourBiggestSqureMinus1 = fourZSquaredMinusl;
+                biggestIndex = 3;
+            }
+
+            //计算平方根和除法 
+            double biggestVal = Math.Sqrt(fourBiggestSqureMinus1 + 1.0f) * 0.5f;
+            double mult = 0.25f / biggestVal;
+            //计算四元数的值
+            switch (biggestIndex)
+            {
+                case 0:
+                    w = biggestVal;
+                    x = (m23 - m32) * mult;
+                    y = (m31 - m13) * mult;
+                    z = (m12 - m21) * mult;
+                    break;
+                case 1:
+                    x = biggestVal;
+                    w = (m23 - m32) * mult;
+                    y = (m12 + m21) * mult;
+                    z = (m31 + m13) * mult;
+                    break;
+                case 2:
+                    y = biggestVal;
+                    w = (m31 - m13) * mult;
+                    x = (m12 + m21) * mult;
+                    z = (m23 + m32) * mult;
+                    break;
+                case 3:
+                    z = biggestVal;
+                    w = (m12 - m21) * mult;
+                    x = (m31 + m13) * mult;
+                    y = (m23 + m32) * mult;
+                    break;
+            }
+            Q[0] = x;
+            Q[1] = y;
+            Q[2] = z;
+            Q[3] = w;
+            return Q;
+        }
+        Matrix4x4 Eular2Rot(double EX, double EY, double EZ, double[] TransVector)
+        {
+            // EX, EY, EZ, TransVector是机器手坐标系（或工具坐标系）在基坐标系（世界坐标系或者工件坐标系也可）里面的位置和姿态变换参数，需要从机器人控制器或示教盒中读取
+            //  EX--机器手坐标系绕基坐标系的X轴旋转欧拉角 
+            //   EY--绕Y轴旋转欧拉角 
+            //   EZ--绕Z轴旋转欧拉角
+            //   TransVector--机器手坐标系原点相对基坐标系的平移向量:3x1
+            double a = EX / 180 * Math.PI;
+            double b = EY / 180 * Math.PI;
+            double r = EZ / 180 * Math.PI;
+            float ca = (float)Math.Cos(a);
+            float sa = (float)Math.Sin(a);
+            float cb = (float)Math.Cos(b);
+            float sb = (float)Math.Sin(b);
+            float cr = (float)Math.Cos(r);
+            float sr = (float)Math.Sin(r);
+            Matrix4x4 Rx = new Matrix4x4(1, 0, 0, 0, 0, ca, -sa, 0, 0, sa, ca, 0, 0, 0, 0, 1);
+            Matrix4x4 Ry = new Matrix4x4(cb, 0, sb, 0, 0, 1, 0, 0, -sb, 0, cb, 0, 0, 0, 0, 1);
+            Matrix4x4 Rz = new Matrix4x4(cr, -sr, 0, 0, sr, cr, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
+            Matrix4x4 R = Rz * Ry * Rx;
+            return R;
+        }
+
+
+        //注：Hamilton为右手系
+        //   JPL     为左手系
+
+        double[,] quat_to_pos_matrix_hm(double p_x, double p_y, double p_z, double x, double y, double z, double w)
+        {
+            double[,] T = new double[4, 4];
+            T[0, 3] = p_x;
+            T[1, 3] = p_y;
+            T[2, 3] = p_z;
+            T[3, 3] = 1;
+            T[0, 0] = 1 - 2 * Math.Pow(y, 2) - 2 * Math.Pow(z, 2);
+            T[0, 1] = 2 * (x * y - w * z);
+            T[0, 2] = 2 * (x * z + w * y);
+            T[1, 0] = 2 * (x * y + w * z);
+            T[1, 1] = 1 - 2 * Math.Pow(x, 2) - 2 * Math.Pow(z, 2);
+            T[1, 2] = 2 * (y * z - w * x);
+
+            T[2, 0] = 2 * (x * z - w * y);
+            T[2, 1] = 2 * (y * z + w * x);
+            T[2, 2] = 1 - 2 * Math.Pow(x, 2) - 2 * Math.Pow(y, 2);
+            return T;
+        }
+
+
+        double[,] quat_to_pos_matrix_JPL(double p_x, double p_y, double p_z, double x, double y, double z, double w)
+        {
+            double[,] T = new double[4, 4];
+            T[0, 3] = p_x;
+            T[1, 3] = p_y;
+            T[2, 3] = p_z;
+            T[3, 3] = 1;
+            T[0, 0] = 1 - 2 * Math.Pow(y, 2) - 2 * Math.Pow(z, 2);
+            T[0, 1] = 2 * (x * y + w * z);
+            T[0, 2] = 2 * (x * z - w * y);
+
+            T[1, 0] = 2 * (x * y - w * z);
+            T[1, 1] = 1 - 2 * Math.Pow(x, 2) - 2 * Math.Pow(z, 2);
+            T[1, 2] = 2 * (y * z + w * x);
+
+            T[2, 0] = 2 * (x * z + w * y);
+            T[2, 1] = 2 * (y * z - w * x);
+            T[2, 2] = 1 - 2 * Math.Pow(x, 2) - 2 * Math.Pow(y, 2);
+            return T;
+        }
+
+
+        double[] pos_matrix_to_quat_hm(double[,] T)
+        {
+            double r11 = T[0, 0];
+            double r12 = T[0, 1];
+            double r13 = T[0, 2];
+            double r21 = T[1, 0];
+            double r22 = T[1, 1];
+            double r23 = T[1, 2];
+            double r31 = T[2, 0];
+            double r32 = T[2, 1];
+            double r33 = T[2, 2];
+            double w = (1 / 2) * Math.Sqrt(1 + r11 + r22 + r33);
+            double x = (r32 - r23) / (4 * w);
+            double y = (r13 - r31) / (4 * w);
+            double z = (r21 - r12) / (4 * w);
+            return new double[] { x, y, z, w };
+        }
+
+
+        double[] pos_matrix_to_quat_JPL(double[,] T)
+        {
+            double r11 = T[0, 0];
+            double r12 = T[0, 1];
+            double r13 = T[0, 2];
+            double r21 = T[1, 0];
+            double r22 = T[1, 1];
+            double r23 = T[1, 2];
+            double r31 = T[2, 0];
+            double r32 = T[2, 1];
+            double r33 = T[2, 2];
+            double w = (1 / 2) * Math.Sqrt(1 + r11 + r22 + r33);
+            double x = (r23 - r32) / (4 * w);
+            double y = (r31 - r13) / (4 * w);
+            double z = (r12 - r21) / (4 * w);
+            return new double[] { x, y, z, w };
         }
     }
 }

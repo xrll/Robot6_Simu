@@ -45,6 +45,8 @@ namespace Robot6_Simu
     /// </summary>
     public partial class Home : System.Windows.Controls.UserControl
     {
+
+
         bool switchingJoint = false;
         public static bool isAnimating = false;
 
@@ -66,7 +68,7 @@ namespace Robot6_Simu
         System.Windows.Forms.Timer timer;
 
         //      "T201_with_cover_v02", "V301_with_cover", "V302", "T401_with_cover", "V501_10L", "V502", "V5030" 
-        Point3D center = new Point3D(); 
+        Point3D center = new Point3D();
 
         public Home()
         {
@@ -76,8 +78,6 @@ namespace Robot6_Simu
             viewPort3d.PanGesture = new MouseGesture(MouseAction.LeftClick);
 
 
-            //STLProcess(AppDomain.CurrentDomain.BaseDirectory + "STL\\V5033.stl", 0, 0);
-          //  STLProcess(AppDomain.CurrentDomain.BaseDirectory + "STL\\T103.stl", -20, 0);
             //var builder = new MeshBuilder(true, true);
             //var position = new Point3D(0, 0, 0);
             //builder.AddSphere(position, 40, 20, 20);
@@ -110,7 +110,7 @@ namespace Robot6_Simu
             //ota2 = new double[] { -st, 0, -ct };
             //otn2 = new double[] { 0, 1, 0 };
             //oto2 = new double[] { ct, 0, -st };
-            ta2 = new double[] { -st*wct, -st*wst, -ct };
+            ta2 = new double[] { -st * wct, -st * wst, -ct };
             tn2 = new double[] { -wst, wct, 0 };
             to2 = new double[] { ct * wct, ct * wst, -st };
             TPoint6 = new double[] { radius * wct + 600, radius * wst + 300, 405 };
@@ -143,30 +143,30 @@ namespace Robot6_Simu
             c20.Path = wps1;
 
 
-            TAngle1 = JointClass6.InverseCal(tn1, to1, ta1, TPoint1,AD,null);
+            TAngle1 = JointClass6.InverseCal(tn1, to1, ta1, TPoint1, AD, null);
             TAngle2 = JointClass6.InverseCal(tn1, to1, ta1, TPoint2, AD, null);
             TAngle3 = JointClass6.InverseCal(tn1, to1, ta1, TPoint3, AD, null);
             TAngle4 = JointClass6.InverseCal(tn1, to1, ta1, TPoint4, AD, null);
 
-            lSPoint = new Point3D(ntx,  nty, ntz);
+            lSPoint = new Point3D(ntx, nty, ntz);
             lEPoint = new Point3D(ntx, mty, mtz);
 
         }
         Point3DCollection wps1, wps2;
         double lt = 0;
         double pL = 200, wL = 600;//预位、提枪高度
-        double[] tn1, to1, ta1, tn2, to2, ta2,tp2, tn3, to3, ta3, tp3, ltn3, lto3, lta3, ltp3;
+        double[] tn1, to1, ta1, tn2, to2, ta2, tp2, tn3, to3, ta3, tp3, ltn3, lto3, lta3, ltp3;
         double[] TPoint1, TPoint2, TPoint3, TPoint4, TPoint5, TPoint6;
         double[] TAngle1, TAngle2, TAngle3, TAngle4, TAngle5, TAngle6;
-        Point3D lSPoint, lEPoint,cSpoint;
-        double radius = 100, cAng = Math.Atan2(3, 6), wAng = 0,wct=0,wst=0,ct=0,st=0;
+        Point3D lSPoint, lEPoint, cSpoint;
+        double radius = 100, cAng = Math.Atan2(3, 6), wAng = 0, wct = 0, wst = 0, ct = 0, st = 0;
         int Process = 0;
 
         private void Initialize_Robot()
         {
             try
             {
-               string basePath = AppDomain.CurrentDomain.BaseDirectory + "STL\\";
+                string basePath = AppDomain.CurrentDomain.BaseDirectory + "STL\\";
                 ModelImporter import = new ModelImporter();
                 int i = 0;
                 foreach (string modelName in arr)
@@ -230,50 +230,6 @@ namespace Robot6_Simu
             {
                 System.Windows.Forms.MessageBox.Show("Exception Error:" + e.StackTrace);
             }
-        }
-        void STLProcess(string filePath, float x, float z)
-        {
-            FileInfo fi = new FileInfo(filePath);
-            string nfile = fi.FullName.Replace(fi.Extension, "");
-            nfile += "2" + fi.Extension;
-            byte[] fileBytes = System.IO.File.ReadAllBytes(filePath);
-            byte[] nfileBytes = (byte[])fileBytes.Clone();
-            int numOfMesh = System.BitConverter.ToInt32(nfileBytes, 80);
-            bool processError = false;
-            int byteIndex = 84;
-            float vx, vz;
-            byte[] nx, nz;
-            for (int i = 0; i < numOfMesh; i++)
-            {
-                try
-                {
-                    byteIndex += 12;///* face normal */
-                    /* vertex */
-                    for (int j = 0; j < 3; j++)
-                    {
-                        vx = System.BitConverter.ToSingle(nfileBytes, byteIndex) + x;
-                        nx = BitConverter.GetBytes(vx);
-                        nx.CopyTo(nfileBytes, byteIndex);
-                        byteIndex += 8;
-                        vz = System.BitConverter.ToSingle(nfileBytes, byteIndex) + z;
-                        nz = BitConverter.GetBytes(vz);
-                        nz.CopyTo(nfileBytes, byteIndex);
-                        byteIndex += 4;
-                    }
-                    byteIndex += 2; // Attribute byte count
-                }
-                catch
-                {
-                    processError = true;
-                    break;
-                }
-            }
-            FileStream file = new FileStream(nfile,
-                                  FileMode.Create,
-                                  FileAccess.Write);
-
-            file.Write(nfileBytes, 0, nfileBytes.Length);
-            file.Close();
         }
 
 
@@ -572,7 +528,7 @@ namespace Robot6_Simu
                     tn3 = new double[] { sct, -cct, 0 };
                     to3 = new double[] { -ct * cct, -ct * sct, st };
                 }
-                if(ltn3!=null&&lto3!=null&&lta3!=null)
+                if (ltn3 != null && lto3 != null && lta3 != null)
                 {
                     double d1 = tp3[0] - ltp3[0];
                     double d2 = tp3[1] - ltp3[1];
@@ -641,7 +597,7 @@ namespace Robot6_Simu
                         wAng = 0;
                     }
                     MainWindowViewModel.JointAngles[1] -= 0.2;
-                    MainWindowViewModel.JointAngles[4] -= 0.15;
+                    MainWindowViewModel.JointAngles[4] -= 0.2;
                     MainWindowViewModel.JointAngles[5] -= 0.5;
                     double[] angles = new double[6];
                     MainWindowViewModel.JointAngles.CopyTo(angles, 0);
@@ -683,10 +639,10 @@ namespace Robot6_Simu
         double stp = 0.5;
         bool fstp = true;
         double vstp = 0.2;
-        public double[] PGInverseKinematics(double[] target, double[] angles,ref bool tog)
+        public double[] PGInverseKinematics(double[] target, double[] angles, ref bool tog)
         {
-            double dpv=0,dnv = 0, dav = 0, dov = 0, nnx = 0, nny = 0, nnz = 0, nax = 0, nay = 0, naz = 0, nox = 0, noy = 0, noz = 0, drx = 0, dry = 0, drz = 0;
-            double dpx=0,dpy=0,dpz=0,dnx = 0, dny = 0, dnz = 0, dax = 0, day = 0, daz = 0, dox = 0, doy = 0, doz = 0;
+            double dpv = 0, dnv = 0, dav = 0, dov = 0, nnx = 0, nny = 0, nnz = 0, nax = 0, nay = 0, naz = 0, nox = 0, noy = 0, noz = 0, drx = 0, dry = 0, drz = 0;
+            double dpx = 0, dpy = 0, dpz = 0, dnx = 0, dny = 0, dnz = 0, dax = 0, day = 0, daz = 0, dox = 0, doy = 0, doz = 0;
             double[] oldAngles = { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 };
             angles.CopyTo(oldAngles, 0);
             double[] diff = new double[6];
@@ -721,7 +677,7 @@ namespace Robot6_Simu
                     dpy /= dpv / stp;
                     dpz /= dpv / stp;
                 }
-                else if (dpv > stp/2)
+                else if (dpv > stp / 2)
                 {
                     dpx /= dpv / stp * 2.0;
                     dpy /= dpv / stp * 2.0;
@@ -763,7 +719,7 @@ namespace Robot6_Simu
                     doy /= dov / vstp * 2.0;
                     doz /= dov / vstp * 2.0;
                 }
-                if (dnv > vstp/2 || dav > vstp/2 || dov > vstp / 2.0)
+                if (dnv > vstp / 2 || dav > vstp / 2 || dov > vstp / 2.0)
                 {
                     drx = dnz * r6n[1] + doz * r6o[1] + daz * r6a[1];
                     dry = dnx * r6n[2] + dox * r6o[2] + dax * r6a[2];
@@ -781,9 +737,9 @@ namespace Robot6_Simu
                 double gradient = PartialGradient(target, angles, i);
                 if (fstp)
                     angles[i] -= LearningRate * gradient;
-                else if (dnv > vstp/2 || dav > vstp/2.0 || dov > vstp / 2.0)
+                else if (dnv > vstp / 2 || dav > vstp / 2.0 || dov > vstp / 2.0)
                 {
-                    angles[i] += diff[i]*10;
+                    angles[i] += diff[i];
                 }
                 else
                 {
@@ -807,7 +763,7 @@ namespace Robot6_Simu
                 tog = true;
                 return angles;
             }
-            return angles;           
+            return angles;
         }
         public bool checkAngles(double[] oldAngles, double[] angles)
         {
@@ -847,8 +803,8 @@ namespace Robot6_Simu
 
         public double DistanceFromTarget(double[] target, double[] angles)
         {
-            double[] point = JointClass6.R6P(AD, new double[] { angles[0]/57.29578, angles[1] / 57.29578, angles[2] / 57.29578, angles[3] / 57.29578, angles[4] / 57.29578, angles[5] / 57.29578, });
-//            double[] point = ForwardKinematics(angles);
+            double[] point = JointClass6.R6P(AD, new double[] { angles[0] / 57.29578, angles[1] / 57.29578, angles[2] / 57.29578, angles[3] / 57.29578, angles[4] / 57.29578, angles[5] / 57.29578, });
+            //            double[] point = ForwardKinematics(angles);
             return Math.Sqrt(Math.Pow((point[0] - target[0]), 2.0) + Math.Pow((point[1] - target[1]), 2.0) + Math.Pow((point[2] - target[2]), 2.0));
         }
         private void rPara_OnJointValueChanged()
@@ -859,7 +815,7 @@ namespace Robot6_Simu
         JointClass6 A1, A2, A3, A4, A5, A6;
         object obj = new object();
 
-        string[] arr = { "T201_with_cover_v02", "V301_with_cover", "V302", "T401_with_cover", "V501_10L", "V502", "V5033", "T1032" };
+        string[] arr = { "T201_with_cover_v02", "V301_with_cover", "V302", "T401_with_cover", "V501_10L", "V502", "V5033", "T103" };
         public double[] ForwardKinematics(double[] angles)
         {
             lock (obj)
@@ -898,18 +854,29 @@ namespace Robot6_Simu
                 F5.Children.Add(F4);
 
                 F6 = new Transform3DGroup();
-                //T = new TranslateTransform3D(0, 0, 0);
+                T = new TranslateTransform3D(0, 0, 0);
                 R = new RotateTransform3D(new AxisAngleRotation3D(new Vector3D(1, 0, 0), angles[5]), MainWindowViewModel.J61);
-                //F6.Children.Add(T);
+                F6.Children.Add(T);
                 F6.Children.Add(R);
                 F6.Children.Add(F5);
 
-                //F7 = new Transform3DGroup();
-                //T = new TranslateTransform3D(-60, 0, 0);
-                //R = new RotateTransform3D(new AxisAngleRotation3D(new Vector3D(1, 0, 0), angles[5]), MainWindowViewModel.J61);
-                //F7.Children.Add(T);
-                //F7.Children.Add(R);
-                //F7.Children.Add(F5);
+                F7 = new Transform3DGroup();
+                T = new TranslateTransform3D(-60, 0, 0);
+                R = new RotateTransform3D(new AxisAngleRotation3D(new Vector3D(1, 0, 0), angles[5]), MainWindowViewModel.J61);
+                F7.Children.Add(T);
+                F7.Children.Add(R);
+                F7.Children.Add(F5);
+
+                v1.Transform = F1;
+                v12.Transform = F1;
+                v2.Transform = F2;
+                v23.Transform = F2;
+                v3.Transform = F3;
+                v34.Transform = F3;
+                v4.Transform = F4;
+                v45.Transform = F4;
+                v5.Transform = F5;
+                v6.Transform = F6;
 
                 r1.Transform = F1;
                 r2.Transform = F2;
@@ -918,7 +885,7 @@ namespace Robot6_Simu
                 //v45.Transform = F4;
                 r5.Transform = F5;
                 r6.Transform = F6;
-                r7.Transform = F6;
+                r7.Transform = F7;
 
 
                 n6.Transform = F6;
@@ -1042,19 +1009,19 @@ namespace Robot6_Simu
                     for (int j = 0; j < 6; j++)
                         MainWindowViewModel.Jacobian[i * 6 + j] = J[i, j];
                 MainWindowViewModel.Jacobian[36] = JointClass6.Det(J);
-                //A1.CurAngle= Ang[0];
-                //A2.CurAngle = Ang[1];
-                //A3.CurAngle = Ang[2];
-                //A4.CurAngle = Ang[3];
-                //A5.CurAngle = Ang[4];
-                //A6.CurAngle = Ang[5];
+                A1.CurAngle = Ang[0];
+                A2.CurAngle = Ang[1];
+                A3.CurAngle = Ang[2];
+                A4.CurAngle = Ang[3];
+                A5.CurAngle = Ang[4];
+                A6.CurAngle = Ang[5];
 
-                //Matrix4x4 t1 = A1.T;
-                //Matrix4x4 t2 = t1 * A2.T;
-                //Matrix4x4 t3 = t2 * A3.T;
-                //Matrix4x4 t4 = t3 * A4.T;
-                //Matrix4x4 t5 = t4 * A5.T;
-                //Matrix4x4 t6 = t5 * A6.T;
+                Matrix4x4 t1 = A1.T;
+                Matrix4x4 t2 = t1 * A2.T;
+                Matrix4x4 t3 = t2 * A3.T;
+                Matrix4x4 t4 = t3 * A4.T;
+                Matrix4x4 t5 = t4 * A5.T;
+                Matrix4x4 t6 = t5 * A6.T;
 
                 //float x = 300;
                 //float y = 400;

@@ -119,7 +119,7 @@ namespace Robot6_Simu.Domain
             JointAngles[0] = 30;
             JointAngles[1] = -30;
             JointAngles[2] = 30;
-            JointAngles[3] = 30;
+            JointAngles[3] = -30;
             JointAngles[4] = 30;
             JointAngles[5] = 30;
         }
@@ -178,7 +178,7 @@ namespace Robot6_Simu.Domain
         {
             set;
             get;
-        } = new ObservableCollection<double>(new List<double>() { 30, -30, 30, 30, 30, 30 });
+        } = new ObservableCollection<double>(new List<double>() { 0, 0, 0, 0, 0, 0 });
 
         public static Point3D J11
         {
@@ -361,7 +361,7 @@ namespace Robot6_Simu.Domain
         {
             set;
             get;
-        } = new Point3D((JointLength[1] + JointLength[4] + JointLength[5]), 0, (JointLength[0] + JointLength[2] + JointLength[3]));
+        } = new Point3D((JointLength[1] + JointLength[4] + JointLength[5] ), 0, (JointLength[0] + JointLength[2] + JointLength[3]));
          public static Point3D J5n
         {
             set;
@@ -413,7 +413,7 @@ namespace Robot6_Simu.Domain
         {
             set;
             get;
-        } = new ObservableCollection<double>(new List<double>() { JointLength[1] + JointLength[4] + JointLength[5], 0, JointLength[0] + JointLength[2] + JointLength[3] + JointLength[6] });
+        } = new ObservableCollection<double>(new List<double>() { JointLength[1] + JointLength[4] + JointLength[5] + JointLength[7], 0, JointLength[0] + JointLength[2] + JointLength[3] + JointLength[6] });
         public static ObservableCollection<double>? EndN
         {
             set;

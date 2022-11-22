@@ -97,7 +97,7 @@ namespace Robot6_Simu.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("195")]
+        [global::System.Configuration.DefaultSettingValueAttribute("205")]
         public double l3 {
             get {
                 return ((double)(this["l3"]));
@@ -133,7 +133,7 @@ namespace Robot6_Simu.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("150")]
+        [global::System.Configuration.DefaultSettingValueAttribute("142")]
         public double l6 {
             get {
                 return ((double)(this["l6"]));
@@ -145,7 +145,7 @@ namespace Robot6_Simu.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("440")]
+        [global::System.Configuration.DefaultSettingValueAttribute("420")]
         public double l7 {
             get {
                 return ((double)(this["l7"]));
